@@ -16,7 +16,7 @@ if __name__ == '__main__':
         if args.force_download:
             command.append('--force')
         subprocess.run(command, cwd=ROOT, check=True)
-    for script in ('analyze_cities.py', 'plot_cities.py'):
+    for script in ('analyze_cities.py', 'build_dashboard_data.py', 'plot_cities.py'):
         subprocess.run([sys.executable, str(ROOT / script)], cwd=ROOT, check=True)
     print(f'Analysis tables: {ROOT / "analysis"}')
     print(f'Chart: {ROOT / "outputs" / "Australian_cities_climate_2026.png"}')

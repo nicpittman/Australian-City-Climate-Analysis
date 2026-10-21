@@ -26,3 +26,15 @@ def test_key_published_result_matches_analysis_snapshot():
     )
     assert round(result["anomaly"], 3) == 0.728
     assert round(analysis["population"]["share"] * 100, 1) == 66.3
+
+
+def test_dashboard_files_are_present():
+    for name in ("index.html", "styles.css", "app.js", "results.js"):
+        assert (ROOT / "dashboard" / name).is_file()
+
+
+def test_dashboard_bundle_has_published_result():
+    text = (ROOT / "dashboard" / "results.js").read_text()
+    assert '"anomaly":"0.7275801369935714"' in text
+    assert '"rainfall":[' in text
+    assert '"annual":[' in text

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore 2026 temperature anomalies across eight Australian cities.">
+  <title>Australian city climate analysis</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='25' fill='%2300877d'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <p class="eyebrow">Australian city climate analysis</p>
+      <h1>How unusual has 2026 been?</h1>
+      <p class="intro">Compare temperatures at eight city weather stations with three historical baselines.</p>
+    </header>
+
+    <section class="controls" aria-label="Chart controls">
+      <label>Period
+        <select id="window"></select>
+      </label>
+      <label>Baseline
+        <select id="baseline"></select>
+      </label>
+      <label>Measure
+        <select id="measure">
+          <option value="tmean_c">Mean temperature</option>
+          <option value="tmax_c">Maximum temperature</option>
+          <option value="tmin_c">Minimum temperature</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="cards" aria-label="Results summary">
+      <article><span>Weighted city result</span><strong id="weighted">Loading</strong></article>
+      <article><span>Warmest city result</span><strong id="warmest">Loading</strong></article>
+      <article><span>Population represented</span><strong id="coverage">Loading</strong></article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="section-number">01</p>
+          <h2>Results by city</h2>
+          <p class="baseline-tag" id="city-baseline">Loading baseline</p>
+        </div>
+        <p>Temperature difference from the selected baseline. Orange is warmer and blue is cooler.</p>
+      </div>
+      <div id="city-chart" class="chart" role="img" aria-label="Temperature anomaly by city"></div>
+      <p id="city-note" class="note"></p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="section-number">02</p>
+          <h2>Month by month</h2>
+          <p class="baseline-tag" id="monthly-baseline">Loading baseline</p>
+        </div>
+        <p>Monthly differences make it easier to see when the warmth occurred.</p>
+      </div>
+      <div id="heatmap" class="chart" role="img" aria-label="Monthly temperature anomaly heatmap"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="section-number">03</p>
+          <h2>Long term context</h2>
+          <p class="baseline-tag">January to September compared with 2000 to 2025</p>
+        </div>
+        <p>Population weighted mean temperature anomaly for years with complete results from all eight city series.</p>
+      </div>
+      <div id="annual-chart" class="chart" role="img" aria-label="Annual eight city temperature anomaly since 1980"></div>
+      <p id="annual-note" class="note"></p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="section-number">04</p>
+          <h2>Day and night temperatures</h2>
+          <p class="baseline-tag" id="day-night-baseline">Loading baseline</p>
+        </div>
+        <p>Compare maximum and minimum temperature anomalies for each city.</p>
+      </div>
+      <div id="day-night-chart" class="chart" role="img" aria-label="Maximum and minimum temperature anomalies by city"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="section-number">05</p>
+          <h2>Rainfall compared with usual</h2>
+          <p class="baseline-tag" id="rainfall-baseline">Loading baseline</p>
+        </div>
+        <p id="rainfall-rule">Only cities with a complete 2026 period and at least 20 complete baseline years are shown.</p>
+      </div>
+      <div id="rainfall-chart" class="chart" role="img" aria-label="Rainfall as a percentage of the historical baseline"></div>
+      <p id="rainfall-note" class="note"></p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="section-number">06</p>
+          <h2>Southern Oscillation Index</h2>
+        </div>
+        <p>Climate context only. This chart does not attribute the city temperatures to ENSO.</p>
+      </div>
+      <div id="soi-chart" class="chart" role="img" aria-label="Monthly Southern Oscillation Index in 2026"></div>
+    </section>
+
+    <section class="limits">
+      <h2>How to read this</h2>
+      <p>Each city is represented by one weather station. The records are not homogenised, and the population weighted result is a city exposure proxy rather than a national land average. Read the repository methods before using the results.</p>
+    </section>
+
+    <p id="error" class="error" hidden></p>
+  </main>
+  <script src="results.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

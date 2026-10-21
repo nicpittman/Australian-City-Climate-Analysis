@@ -1,26 +1,38 @@
-# Australian city climate analysis
+# Australian City Climate Analysis
 
-Reproduce the eight-city temperature comparison, monthly heatmap and SOI analysis.
+An investigation of climate change across major Australian cities.
 
-This is a source only analysis repository, not an interactive dashboard or live data service. The scripts download the required public inputs and reproduce the January to September 2026 results. Baselines are **2000–2025**, **1981–2010**, and **1980–1989** where enough reference years are available.
+**The population weighted mean across eight city stations was 0.73°C above the 2000 to 2025 baseline from January to September 2026. The strongest warmth coincided with negative SOI from May, while the longer record also shows several recent warm years. This analysis does not attribute the warming to ENSO.**
 
-## Results at a glance
+Placing 2026 beside consistent historical baselines helps distinguish one unusual period from the longer temperature context facing Australian cities.
+
+This repository generates an eight city temperature comparison, monthly heatmap and Southern Oscillation Index analysis. It also includes a small interactive browser dashboard for exploring the results.
+
+The scripts download the required public inputs and reproduce the January to September 2026 analysis. The historical baselines are **2000–2025**, **1981–2010** and **1980–1989**, where enough reference years are available.
+
+## Results summary
 
 | Result | Value | Interpretation |
 |---|---:|---|
-| Eight-city weighted mean anomaly, Jan–Sep vs 2000–2025 | **+0.728°C** | Warm relative to the recent baseline |
-| Eight-city weighted mean anomaly, Jan–Sep vs 1981–2010 | **+1.172°C** | Larger anomaly against the earlier baseline |
+| Eight city weighted mean anomaly, Jan–Sep vs 2000–2025 | **+0.728°C** | Warm relative to the recent baseline |
+| Eight city weighted mean anomaly, Jan–Sep vs 1981–2010 | **+1.172°C** | Larger anomaly against the earlier baseline |
 | Jan–Apr weighted anomaly vs 2000–2025 | **+0.349°C** | More modest warmth early in the year |
 | May–Sep weighted anomaly vs 2000–2025 | **+1.029°C** | Stronger warmth in the middle of the year |
-| Aug–Sep weighted anomaly vs 2000–2025 | **+1.021°C** | Late-winter/early-spring warmth remained elevated |
-| Hobart Jan–Sep derived-mean anomaly vs 2000–2025 | **+0.814°C** | Tmax +0.977°C; Tmin +0.647°C |
-| Population represented | **18.30 million (66.3% of Australia)** | A city-population proxy, not a national land average |
+| Aug–Sep weighted anomaly vs 2000–2025 | **+1.021°C** | Late winter and early spring warmth remained elevated |
+| Hobart Jan–Sep derived mean anomaly vs 2000–2025 | **+0.814°C** | Tmax +0.977°C; Tmin +0.647°C |
+| Population represented | **18.30 million (66.3% of Australia)** | A city population proxy, not a national land average |
 
-The 2026 monthly SOI changed sign in April and became strongly negative from May, reaching −29.1 in July and −21.4 in September. That timing is consistent with an ENSO contribution, but this descriptive analysis does not attribute the observed warmth to ENSO. Results use one station per city, are not homogenised, and should not be read as an official national climate assessment.
+The 2026 monthly SOI changed sign in April and became strongly negative from May, reaching −29.1 in July and −21.4 in September. That timing is consistent with an ENSO contribution, but this descriptive analysis does not attribute the observed warmth to ENSO.
 
-## Quick start
+![Temperature anomalies across eight Australian cities compared with the 2000 to 2025 baseline](docs/city_anomalies_2000_2025.png)
 
-Use Python 3.11 or later (tested with Python 3.12). Unzip the download, open a terminal in the `australian-city-climate` folder, then run:
+![Monthly temperature anomaly heatmap compared with the 2000 to 2025 baseline](docs/monthly_heatmap_2000_2025.png)
+
+![Long term January to September city temperature context compared with the 2000 to 2025 baseline](docs/long_term_context_2000_2025.png)
+
+## Run the analysis
+
+Use Python 3.11 or later. No API key is required.
 
 ```bash
 python3 -m venv .venv
@@ -29,54 +41,62 @@ python -m pip install -r requirements.txt
 python run.py --download
 ```
 
-On Windows, activate with `.venv\Scripts\activate` instead.
+On Windows, activate the environment with `.venv\Scripts\activate`.
 
-No source data or generated results are included in the repository. `python run.py --download` retrieves the documented public inputs and then builds the analysis tables and chart. No API key is required.
+No source records or machine readable derived data are included in the repository. The three documentation images are included, but the underlying records, analysis tables and dashboard result bundle are generated locally. The command downloads the documented public inputs and rebuilds every result. No API key is required.
 
-For the analysis tables alone, no external packages are needed:
+## Open the interactive dashboard
 
-```bash
-python3 analyze_cities.py
-```
-
-To download/validate sources and rebuild in one command:
+After running `python run.py --download`, open `dashboard/index.html` directly or start a local web server from the repository folder:
 
 ```bash
-python run.py --download
+python3 -m http.server 8000
 ```
 
-To run the lightweight result checks:
+Open [http://localhost:8000/dashboard/](http://localhost:8000/dashboard/).
+
+The dashboard uses plain HTML, CSS and JavaScript with no build step. It includes city and monthly temperature anomalies, long term context since 1980, maximum and minimum temperature comparisons, rainfall where the record is complete, and SOI context. `build_dashboard_data.py` creates its compact result bundle from the generated CSV files, so the Python pipeline remains the single source of the calculations.
+
+## What is included
+
+| File or directory | Purpose |
+|---|---|
+| `run.py` | Runs the download, analysis and chart workflow. |
+| `download_data.py` | Downloads and validates the NOAA, BoM and ABS inputs. |
+| `analyze_cities.py` | Computes climatologies, anomalies and population weighted results. |
+| `plot_cities.py` | Builds the static comparison chart, heatmap and SOI panel. |
+| `build_dashboard_data.py` | Creates the compact browser dashboard result bundle. |
+| `dashboard/` | Interactive browser dashboard for the generated results. |
+| `METHODS.md` | Documents station choices, sources, calculations and limitations. |
+| `tests/` | Checks the monthly coverage and published headline result. |
+
+The `raw/`, `analysis/` and `outputs/` directories and `dashboard/results.js` are created locally and ignored by Git.
+
+## How to interpret the results
+
+The analysis uses one station to represent each of Perth, Adelaide, Melbourne, Sydney, Brisbane, Darwin, Alice Springs and Hobart. Archerfield is included as a Brisbane sensitivity check.
+
+The population weighted result describes the people represented by these eight city series. It is not a national land area temperature estimate. The station records are not homogenised, so station changes, missing observations and reference year coverage remain important limitations.
+
+The analysis describes the observed timing of temperature and SOI changes. It does not establish that ENSO caused the temperature anomalies and should not be read as an official national climate assessment. See [METHODS.md](METHODS.md) for the full calculation and data quality notes.
+
+## Related research
+
+- Menne et al. (2012), [An Overview of the Global Historical Climatology Network Daily Database](https://doi.org/10.1175/JTECH-D-11-00103.1), documents the station dataset used by this project.
+- Trewin (2020), [An updated long term homogenized daily temperature data set for Australia](https://doi.org/10.1002/gdj3.95), explains the importance of homogenisation for Australian climate trends and helps frame this project's unhomogenised station limitation.
+- Wang et al. (2023), [Health integrated heat risk assessment in Australian cities](https://doi.org/10.1016/j.eiar.2023.107176), gives wider population and urban heat context. This repository measures station anomalies only and does not estimate heat exposure or health risk.
+
+## Data sources
+
+- NOAA NCEI Global Historical Climatology Network Daily station records
+- Bureau of Meteorology monthly Southern Oscillation Index
+- Australian Bureau of Statistics city and national population estimates
+
+Source URLs and station identifiers are documented in [METHODS.md](METHODS.md). Source data retain the terms and attribution requirements of their providers.
+
+## Tests
 
 ```bash
 python -m pip install -r requirements-dev.txt
 pytest -q
 ```
-
-## Contents
-
-| File or directory | Purpose |
-|---|---|
-| `run.py` | Runs the analysis and chart generation in sequence. |
-| `download_data.py` | Downloads or validates all NOAA GHCN-Daily, BoM SOI and ABS inputs consumed by the analysis. |
-| `analyze_cities.py` | Parses daily records, applies quality/coverage rules, computes climatologies, anomalies and population weights; exports CSV and JSON. |
-| `plot_cities.py` | Recreates the baseline-comparison chart, monthly heatmap and SOI row. |
-| `requirements.txt` | Plotting dependencies pinned to the versions used for this package. |
-| `requirements-dev.txt` | Optional local test dependency. |
-| `raw/` | Created by `download_data.py` and ignored by Git. Contains the downloaded NOAA, BoM and ABS source files. |
-| `analysis/` | Created when the analysis runs; contains daily/monthly CSVs, baseline tables, comparisons, quality flags and analysis JSON. |
-| `outputs/` | Created when the analysis runs; contains the generated PNG chart. |
-| `METHODS.md` | Detailed station choices, sources, aggregation rules and limitations. |
-
-## Scope and modifications
-
-The primary series represent Perth, Adelaide, Melbourne, Sydney, Brisbane, Darwin, Alice Springs and Hobart. Archerfield is included as a Brisbane sensitivity check. `SPECS`, `BASES`, `WINDOWS` and `CUTOFF` are near the top of `analyze_cities.py`.
-
-The scripts currently target the 2026 analysis. To extend the date range, update the raw observations, date/window configuration, year loops and plot labels together. Changing `CUTOFF` alone is not enough. A general station selector and automatic refresh are future app work.
-
-The population-weighted result is a proxy based on one station per city, not a national gridded exposure estimate. Station records are not homogenised; missing observations and reference-year counts matter. See `METHODS.md` before interpreting results or publishing derivative work.
-
-## Relationship to the Snowy forecast app
-
-Keep this project as a separate GitHub repository. It is the source historical analysis, not a live forecast app. The Snowy rainfall scorecard uses a compact export of the monthly 2000–2025 city climatologies for its separate city temperature page. The Snowy repository stores its own copy of that export and does not depend on this repository at runtime.
-
-Source data retain the terms and attribution requirements of their providers: Bureau of Meteorology, NOAA NCEI and the Australian Bureau of Statistics. Source URLs are documented in `METHODS.md` and generated `analysis/stations.csv`.
