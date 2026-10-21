@@ -1,6 +1,6 @@
 # Australian city climate analysis
 
-Reproduce the eight-city temperature comparison, monthly heatmap and SOI analysis discussed in the accompanying ChatGPT conversation.
+Reproduce the eight-city temperature comparison, monthly heatmap and SOI analysis.
 
 This is a source only analysis repository, not an interactive dashboard or live data service. The scripts download the required public inputs and reproduce the January to September 2026 results. Baselines are **2000–2025**, **1981–2010**, and **1980–1989** where enough reference years are available.
 
